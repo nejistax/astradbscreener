@@ -9,14 +9,14 @@ from langchain.vectorstores import AstraDB
 
 def main():
     load_dotenv(find_dotenv(), override=True)
-    st.set_page_config(page_title="Resume Screening Assistant")
-    st.title('HR - Resume Screening Assistant')
-    st.subheader('I can help you screen candidates')
+    st.set_page_config(page_title="AstraDB Resume Screening Assistant")
+    st.title('AstraDB Resume Screening Assistant')
+    st.subheader('I can help you screen candidates resumes')
     load_dotenv(find_dotenv(), override=True)
 
     init_astra_db()
 
-    job_description = st.text_area("Please past the 'JOB DESCRIPTION' here..", key=1)
+    job_description = st.text_area("Please post your 'JOB DESCRIPTION' here..", key=1)
     document_count = st.text_input("No. of matching RESUMES to return ", key=2)
 
     # upload the resumes
@@ -35,9 +35,9 @@ def main():
             # create emebeddings instance
             embedding = OpenAIEmbeddings()
             vstore = AstraDB(
-                namespace="neji",
+                namespace=os.environ["ASTRA_DB_NAMESPACE"],
                 embedding=embedding,
-                collection_name="resumes",
+                collection_name=os.environ["ASTRA_DB_COLLECTION"],
                 token=os.environ["ASTRA_DB_APPLICATION_TOKEN"],
                 api_endpoint=os.environ["ASTRA_DB_API_ENDPOINT"],
             )
